@@ -6,19 +6,45 @@
   <component name="ChangeListManager">
     <list default="true" id="c6cdf383-5378-4667-8db1-c193f344b2c8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/controller/AnalyticsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/controller/AnalyticsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/charts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/charts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/controller/DashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/controller/FamilyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/controller/FamilyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/controller/MoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/controller/MoodController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/model/Family.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/model/Family.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/repository/FamilyMemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/repository/FamilyMemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/repository/MoodEntryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/repository/MoodEntryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/service/AnalyticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/service/AnalyticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/service/FamilyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/service/FamilyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/service/MoodEntryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/service/MoodEntryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/famcare/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/famcare/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/analytics.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/analytics.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/family-dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/family-dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/journal.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/journal.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -29,15 +55,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.FamCareApplication.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Raghul Krishnan B/IdeaProjects/FamCare/src/main/java/org/project/Main.java&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.FamCareApplication.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/Raghul Krishnan B/IdeaProjects/FamCare/src/main/java/org/project/Main.java"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

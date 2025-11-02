@@ -1,3 +1,157 @@
-body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-.navbar-brand { font-weight: 600; }
-.card-title { font-weight: 600; }
+/* --- Global Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* ================================================================
+  *** THEME CONTROL PANEL ***
+  Change the colors here to re-skin the entire site.
+================================================================
+*/
+:root {
+  /* Make all Bootstrap components (like cards) have a softer, more modern rounded corner */
+  --bs-border-radius: 0.75rem;
+  --bs-border-radius-sm: 0.5rem;
+  --bs-border-radius-lg: 1rem;
+
+  /* --- "Light Mode" Color Palette (Blue, Gold, Red) --- */
+
+  /* Blue: Used as the primary theme color */
+  /* CHANGE THIS to change your main navbar/button color */
+  --famcare-primary: #0d6efd; /* Bootstrap Blue */
+  --famcare-primary-rgb: 13, 110, 253;
+  --famcare-primary-darker: #0b5ed7; /* Darker blue for hover */
+
+  /* Gold: Used as the accent color for selections */
+  /* CHANGE THIS to change your journal selection color */
+  --famcare-accent: #ffc107;  /* Vibrant Gold/Amber */
+  --famcare-accent-rgb: 255, 193, 7;
+}
+/* ================================================================
+  (End of Control Panel)
+================================================================
+*/
+
+
+body {
+  /* Use 'Inter' as the main font */
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+
+  /* Set light background and dark text */
+  background-color: #f8f9fa; /* Light gray background */
+  color: #212529; /* Standard dark text */
+  line-height: 1.6;
+}
+
+/* --- Navbar --- */
+.navbar {
+  /* This automatically uses your --famcare-primary color */
+  background-color: var(--famcare-primary) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-brand {
+  font-weight: 600;
+  /* Text on the navbar is white (default for .navbar-dark) */
+}
+
+.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus {
+  color: #ffffff;
+}
+
+/* --- Cards --- */
+.card {
+  /* Standard white card background */
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); /* Soft shadow */
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+   /* This automatically uses your --famcare-primary color */
+   border-color: var(--famcare-primary);
+   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+}
+
+.card-title {
+  font-weight: 600;
+  color: #343a40; /* Dark text for titles */
+}
+
+/* Make sure text-muted uses standard light-mode color */
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* --- Buttons --- */
+.btn {
+  font-weight: 500;
+  padding: 0.6rem 1.25rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+  /* This automatically uses your --famcare-primary color */
+  background-color: var(--famcare-primary);
+  border-color: var(--famcare-primary);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(var(--famcare-primary-rgb), 0.3);
+}
+
+.btn-primary:hover {
+  /* This automatically uses your --famcare-primary-darker color */
+  transform: translateY(-1px);
+  background-color: var(--famcare-primary-darker);
+  border-color: var(--famcare-primary-darker);
+  box-shadow: 0 4px 8px rgba(var(--famcare-primary-rgb), 0.4);
+}
+
+/* --- Forms --- */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-control,
+.form-select {
+  background-color: #fdfdff;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #ffffff;
+  color: #212529;
+  /* This automatically uses your --famcare-primary color */
+  border-color: var(--famcare-primary);
+  box-shadow: 0 0 0 0.25rem rgba(var(--famcare-primary-rgb), 0.25);
+}
+
+/* --- Journal Assessment Buttons (btn-check) --- */
+
+/* Style for the un-checked buttons */
+.btn-check + .btn-outline-primary {
+  background-color: #ffffff;
+  border-color: #ced4da;
+  color: #495057;
+}
+
+/* Hovering an un-checked button shows the accent color */
+.btn-check + .btn-outline-primary:hover {
+  /* This automatically uses your --famcare-accent color */
+  background-color: rgba(var(--famcare-accent-rgb), 0.1);
+  border-color: var(--famcare-accent);
+  color: var(--famcare-accent);
+}
+
+/* The selected button uses the full accent color */
+.btn-check:checked + .btn-outline-primary {
+  /* This automatically uses your --famcare-accent color */
+  background-color: var(--famcare-accent);
+  color: #212529; /* Use dark text for readability on gold */
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(var(--famcare-accent-rgb), 0.3);
+  border-color: var(--famcare-accent);
+}
+

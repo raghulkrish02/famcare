@@ -66,4 +66,38 @@ public class SecurityConfig {
             .httpBasic(Customizer.withDefaults());
         return http.build();
     }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authz -> authz
+
+                        .requestMatchers(
+                                "/register",
+                                "/login",
+                                "/css/**",
+                                "/js/**",
+                                "/error" // <-- Make sure "/error" is permitted
+                        ).permitAll()
+
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
+
+        // --- IMPORTANT ---
+        // REMOVE the entire .exceptionHandling() block
+        // .exceptionHandling(e -> e
+        //     .accessDeniedPage("/access-denied")
+        // );
+
+        return http.build();
+    }
 }

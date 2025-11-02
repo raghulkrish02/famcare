@@ -6,71 +6,305 @@
   <title>Journal - FamCare</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" th:href="@{/dashboard}">FamCare</a>
+    <a class="navbar-brand d-flex align-items-center" th:href="@{/dashboard}">
+      <i class="bi bi-house-door-fill me-2"></i> <!-- Home Icon -->
+      FamCare
+    </a>
+
+    <!-- *** FIX: Removed "My Remedy" button from here *** -->
     <div>
       <a class="btn btn-outline-light" th:href="@{/logout}">Logout</a>
     </div>
+
   </div>
 </nav>
 <div class="container py-4">
+  <!-- Reverted to two-column layout -->
   <div class="row g-3">
-    <div class="col-md-4">
+    <!-- Column 1: Daily Assessment -->
+    <div class="col-md-5">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">New Entry</h5>
-          <form th:action="@{/journal}" th:object="${entry}" method="post">
-            <div class="mb-2">
-              <label class="form-label">Date</label>
-              <input type="date" th:field="*{date}" class="form-control">
+          <h5 class="card-title">Daily Assessment</h5>
+          <p class="card-text text-muted small">Answer these questions to log your mood and stress for the day.</p>
+
+          <!-- Alert for errors -->
+          <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+          <!-- New Assessment Form -->
+          <form th:action="@{/journal/assess}" method="post">
+
+            <!-- Question 1: Tense -->
+            <div class="mb-4">
+              <label class="form-label">1. How have you felt physically tense (e.g., sore muscles)?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q1" id="q1-opt1" value="0" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q1-opt1">Not at all</label>
+                <input type="radio" class="btn-check" name="q1" id="q1-opt2" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q1-opt2">Sometimes</label>
+                <input type="radio" class="btn-check" name="q1" id="q1-opt3" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q1-opt3">Often</label>
+                <input type="radio" class="btn-check" name="q1" id="q1-opt4" value="3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q1-opt4">Almost always</label>
+              </div>
             </div>
-            <div class="mb-2">
-              <label class="form-label">Mood (1-10)</label>
-              <input type="number" min="1" max="10" th:field="*{moodLevel}" class="form-control" required>
+
+            <!-- Question 2: Bothered -->
+            <div class="mb-4">
+              <label class="form-label">2. How often have you been bothered by things that don't usually bother you?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q2" id="q2-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q2-opt1">Not at all</label>
+                <input type="radio" class="btn-check" name="q2" id="q2-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q2-opt2">Sometimes</label>
+                <input type="radio" class="btn-check" name="q2" id="q2-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q2-opt3">Often</label>
+                <input type="radio" class="btn-check" name="q2" id="q2-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q2-opt4">Almost always</label>
+              </div>
             </div>
-            <div class="mb-2">
-              <label class="form-label">Stress (1-10)</label>
-              <input type="number" min="1" max="10" th:field="*{stressLevel}" class="form-control" required>
+
+            <!-- Question 3: Sleep -->
+            <div class="mb-4">
+              <label class="form-label">3. How would you rate your sleep quality recently?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q3" id="q3-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q3-opt1">Very Good</label>
+                <input type="radio" class="btn-check" name="q3" id="q3-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q3-opt2">Good</label>
+                <input type="radio" class="btn-check" name="q3" id="q3-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q3-opt3">Poor</label>
+                <input type="radio" class="btn-check" name="q3" id="q3-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q3-opt4">Very Poor</label>
+              </div>
             </div>
-            <div class="mb-2">
-              <label class="form-label">Notes</label>
-              <textarea th:field="*{notes}" class="form-control" rows="3"></textarea>
+
+            <!-- Question 4: Energy -->
+            <div class="mb-4">
+              <label class="form-label">4. How has your energy level been?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q4" id="q4-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q4-opt1">High energy</label>
+                <input type="radio" class="btn-check" name="q4" id="q4-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q4-opt2">Good energy</label>
+                <input type="radio" class="btn-check" name="q4" id="q4-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q4-opt3">Low energy</label>
+                <input type="radio" class="btn-check" name="q4" id="q4-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q4-opt4">Exhausted</label>
+              </div>
             </div>
-            <button class="btn btn-primary">Save</button>
+
+            <!-- Question 5: Interest -->
+            <div class="mb-4">
+              <label class="form-label">5. How much interest have you had in doing things you normally enjoy?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q5" id="q5-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q5-opt1">High interest</label>
+                <input type="radio" class="btn-check" name="q5" id="q5-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q5-opt2">Some interest</label>
+                <input type="radio" class="btn-check" name="q5" id="q5-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q5-opt3">Little interest</label>
+                <input type="radio" class="btn-check" name="q5" id="q5-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q5-opt4">No interest</label>
+              </div>
+            </div>
+
+            <!-- Question 6: Overwhelmed -->
+            <div class="mb-4">
+              <label class="form-label">6. How often have you felt overwhelmed or unable to cope?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q6" id="q6-opt1" value="0" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q6-opt1">Not at all</label>
+                <input type="radio" class="btn-check" name="q6" id="q6-opt2" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q6-opt2">Sometimes</label>
+                <input type="radio" class="btn-check" name="q6" id="q6-opt3" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q6-opt3">Often</label>
+                <input type="radio" class="btn-check" name="q6" id="q6-opt4" value="3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q6-opt4">Almost always</label>
+              </div>
+            </div>
+
+            <!-- Question 7: Future -->
+            <div class="mb-4">
+              <label class="form-label">7. How hopeful do you feel about the future?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q7" id="q7-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q7-opt1">Very hopeful</label>
+                <input type="radio" class="btn-check" name="q7" id="q7-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q7-opt2">Somewhat hopeful</label>
+                <input type="radio" class="btn-check" name="q7" id="q7-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q7-opt3">A little hopeful</label>
+                <input type="radio" class="btn-check" name="q7" id="q7-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q7-opt4">Not at all</label>
+              </div>
+            </div>
+
+            <!-- Question 8: Connected -->
+            <div class="mb-4">
+              <label class="form-label">8. How connected have you felt to friends or family?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q8" id="q8-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q8-opt1">Very connected</label>
+                <input type="radio" class="btn-check" name="q8" id="q8-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q8-opt2">Somewhat connected</label>
+                <input type="radio" class="btn-check" name="q8" id="q8-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q8-opt3">A little connected</label>
+                <input type="radio" class="btn-check" name="q8" id="q8-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q8-opt4">Not at all</label>
+              </div>
+            </div>
+
+            <!-- Question 9: Relax -->
+            <div class="mb-4">
+              <label class="form-label">9. How much time did you make for relaxation or hobbies?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q9" id="q9-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q9-opt1">A good amount</label>
+                <input type="radio" class="btn-check" name="q9" id="q9-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q9-opt2">A little time</label>
+                <input type="radio" class="btn-check" name="q9" id="q9-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q9-opt3">Almost no time</label>
+                <input type="radio" class="btn-check" name="q9" id="q9-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q9-opt4">No time at all</label>
+              </div>
+            </div>
+
+            <!-- Question 10: Smile -->
+            <div class="mb-4">
+              <label class="form-label">10. How often have you been smiling or laughing?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q10" id="q10-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q10-opt1">Often</label>
+                <input type="radio" class="btn-check" name="q10" id="q10-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q10-opt2">Sometimes</label>
+                <input type="radio" class="btn-check" name="q10" id="q10-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q10-opt3">Rarely</label>
+                <input type="radio" class="btn-check" name="q10" id="q10-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q10-opt4">Not at all</label>
+              </div>
+            </div>
+
+            <!-- Question 11: Proud -->
+            <div class="mb-4">
+              <label class="form-label">11. How often have you felt proud of yourself or your accomplishments?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q11" id="q11-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q11-opt1">Often</label>
+                <input type="radio" class="btn-check" name="q11" id="q11-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q11-opt2">Sometimes</label>
+                <input type="radio" class="btn-check" name="q11" id="q11-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q11-opt3">Rarely</label>
+                <input type="radio" class="btn-check" name="q11" id="q11-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q11-opt4">Not at all</label>
+              </div>
+            </div>
+
+            <!-- Question 12: Worrying -->
+            <div class="mb-4">
+              <label class="form-label">12. How often have you been worrying about the future?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q12" id="q12-opt1" value="0" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q12-opt1">Not at all</label>
+                <input type="radio" class="btn-check" name="q12" id="q12-opt2" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q12-opt2">Sometimes</label>
+                <input type="radio" class="btn-check" name="q12" id="q12-opt3" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q12-opt3">Often</label>
+                <input type="radio" class="btn-check" name="q12" id="q12-opt4" value="3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q12-opt4">Almost always</label>
+              </div>
+            </div>
+
+            <!-- Question 13: Concentration -->
+            <div class="mb-4">
+              <label class="form-label">13. How has your ability to concentrate been?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q13" id="q13-opt1" value="3" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q13-opt1">Very Good</label>
+                <input type="radio" class="btn-check" name="q13" id="q13-opt2" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q13-opt2">Good</label>
+                <input type="radio" class="btn-check" name="q13" id="q13-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q13-opt3">Poor</label>
+                <input type="radio" class="btn-check" name="q13" id="q13-opt4" value="0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q13-opt4">Very Poor</label>
+              </div>
+            </div>
+
+            <!-- Question 14: Appetite -->
+            <div class="mb-4">
+              <label class="form-label">14. Have you noticed significant changes in your appetite?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q14" id="q14-opt1" value="0" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q14-opt1">No changes</label>
+                <input type="radio" class="btn-check" name="q14" id="q14-opt2" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q14-opt2">Eating less</label>
+                <input type="radio" class="btn-check" name="q14" id="q14-opt3" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q14-opt3">Eating more</label>
+              </div>
+            </div>
+
+            <!-- Question 15: Irritable -->
+            <div class="mb-4">
+              <label class="form-label">15. How often have you felt irritable or easily annoyed?</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="q15" id="q15-opt1" value="0" autocomplete="off" required>
+                <label class="btn btn-outline-primary" for="q15-opt1">Not at all</label>
+                <input type="radio" class="btn-check" name="q15" id="q15-opt2" value="1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q15-opt2">Sometimes</label>
+                <input type="radio" class="btn-check" name="q15" id="q15-opt3" value="2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q15-opt3">Often</label>
+                <input type="radio" class="btn-check" name="q15" id="q15-opt4" value="3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="q15-opt4">Almost always</label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg w-100">Submit Assessment</button>
           </form>
         </div>
       </div>
     </div>
-    <div class="col-md-8">
+
+    <!-- History column -->
+    <div class="col-md-7">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">History</h5>
-          <div class="table-responsive">
+          <div class="table-responsive" style="max-height: 80vh; overflow-y: auto;">
             <table class="table table-striped">
               <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Mood</th>
-                  <th>Stress</th>
-                  <th>Notes</th>
-                  <th></th>
-                </tr>
+              <tr>
+                <th>Date</th>
+                <th>Mood</th>
+                <th>Stress</th>
+                <th>Notes</th>
+                <th>Actions</th> <!-- Updated header -->
+              </tr>
               </thead>
               <tbody>
-                <tr th:each="e : ${entries}">
-                  <td th:text="${e.date}"></td>
-                  <td th:text="${e.moodLevel}"></td>
-                  <td th:text="${e.stressLevel}"></td>
-                  <td th:text="${e.notes}"></td>
-                  <td>
-                    <form th:action="@{'/journal/delete/' + ${e.id}}" method="post">
+              <tr th:if="${entries.isEmpty()}">
+                <td colspan="5" class="text-center text-muted">No entries yet.</td>
+              </tr>
+              <tr th:each="e : ${entries}">
+                <td th:text="${e.date}"></td>
+                <td th:text="${e.moodLevel}"></td>
+                <td th:text="${e.stressLevel}"></td>
+                <td th:text="${e.notes}"></td>
+                <td>
+                  <!-- *** FIX: Added "Remedy" button and "Delete" button *** -->
+                  <div class="btn-group" role="group">
+                    <a th:href="@{/remedy/{id}(id=${e.id})}"
+                       class="btn btn-sm btn-outline-info">Remedy</a>
+                    <form th:action="@{'/journal/delete/' + ${e.id}}" method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this entry?');">
                       <button class="btn btn-sm btn-outline-danger">Delete</button>
                     </form>
-                  </td>
-                </tr>
+                  </div>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -79,5 +313,24 @@
     </div>
   </div>
 </div>
+
+<!-- Script for scroll jump fix -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const radioLabels = document.querySelectorAll('label.btn-outline-primary');
+    radioLabels.forEach(label => {
+      label.addEventListener('mousedown', (e) => {
+        const radioInput = document.getElementById(label.getAttribute('for'));
+        if (radioInput && radioInput.checked) {
+          return;
+        }
+        if (document.activeElement) {
+          document.activeElement.blur();
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 </html>

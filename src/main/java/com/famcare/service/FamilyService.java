@@ -5,12 +5,14 @@ import com.famcare.model.FamilyMember;
 import com.famcare.repository.FamilyMemberRepository;
 import com.famcare.repository.FamilyRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // Import this
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class FamilyService {
+
     private final FamilyRepository familyRepository;
     private final FamilyMemberRepository familyMemberRepository;
 
@@ -19,11 +21,42 @@ public class FamilyService {
         this.familyMemberRepository = familyMemberRepository;
     }
 
-    public Family saveFamily(Family f) { return familyRepository.save(f); }
-    public List<Family> allFamilies() { return familyRepository.findAll(); }
-    public Optional<Family> getFamily(Long id) { return familyRepository.findById(id); }
+    public List<Family> allFamilies() {
+        return familyRepository.findAll();
+    }
 
-    public FamilyMember addMember(FamilyMember fm) { return familyMemberRepository.save(fm); }
-    public List<FamilyMember> membersOf(Long familyId) { return familyMemberRepository.findByFamilyId(familyId); }
-    public List<FamilyMember> membershipOfUser(Long userId) { return familyMemberRepository.findByUserId(userId); }
+    public Family saveFamily(Family family) {
+        return familyRepository.save(family);
+    }
+
+    public FamilyMember addMember(FamilyMember fm) {
+        return familyMemberRepository.save(fm);
+    }
+
+    public List<FamilyMember> allMembers() {
+        return familyMemberRepository.findAll();
+    }
+
+    public Optional<Family> findFamilyById(Long id) {
+        return familyRepository.findById(id);
+    }
+
+    public List<FamilyMember> findMembersByFamilyId(Long familyId) {
+        return familyMemberRepository.findByFamilyId(familyId);
+    }
+
+    @Transactional // Add this annotation
+    public void removeMember(Long memberId) {
+        familyMemberRepository.deleteById(memberId);
+    }
+
+    // --- ADD THIS NEW METHOD ---
+    @Transactional // This is very important
+    public void deleteFamily(Long familyId) {
+        // 1. Delete all member links first
+        familyMemberRepository.deleteByFamilyId(familyId);
+
+        // 2. Then, delete the family itself
+        familyRepository.deleteById(familyId);
+    }
 }

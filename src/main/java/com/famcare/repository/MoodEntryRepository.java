@@ -10,4 +10,6 @@ public interface MoodEntryRepository extends JpaRepository<MoodEntry, Long> {
     List<MoodEntry> findByUserIdOrderByDateDesc(Long userId);
     List<MoodEntry> findTop7ByUserIdOrderByDateDesc(Long userId);
     List<MoodEntry> findByUserIdAndDateBetween(Long userId, LocalDate start, LocalDate end);
+    List<MoodEntry> findByUserIdInOrderByDateDesc(List<Long> userIds);
+    void deleteByUserId(Long userId);
 }

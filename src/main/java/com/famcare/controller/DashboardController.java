@@ -13,4 +13,10 @@ public class DashboardController {
         model.addAttribute("username", auth != null ? auth.getName() : "Guest");
         return "dashboard";
     }
+    // Inside a controller, e.g., DashboardController.java
+    @GetMapping("/remedies")
+    public String showRemedies() {
+        return "remedies"; // Renders remedies.html
+    }
 }
+

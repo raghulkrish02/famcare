@@ -1,11 +1,12 @@
 package com.famcare.controller;
 
 import com.famcare.model.MoodEntry;
-import com.famcare.model.User; // IMPORT YOUR USER MODEL
-import com.famcare.repository.UserRepository; // IMPORT YOUR USER REPOSITORY
+import com.famcare.model.User;
+import com.famcare.repository.UserRepository;
 import com.famcare.service.AnalyticsService;
 import com.famcare.service.MoodEntryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize; // IMPORT THIS
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,63 +20,56 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional; // ADD THIS IMPORT
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/analytics")
+// --- FIX 1: Allow both USER and ADMIN to see analytics ---
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 public class AnalyticsController {
     private final MoodEntryService moodEntryService;
     private final AnalyticsService analyticsService;
-    private final UserRepository userRepository;
+    private final UserRepository userRepository; // For getting real User ID
 
-    public AnalyticsController(MoodEntryService moodEntryService,
-                               AnalyticsService analyticsService,
-                               UserRepository userRepository) {
+    public AnalyticsController(MoodEntryService moodEntryService, AnalyticsService analyticsService, UserRepository userRepository) {
         this.moodEntryService = moodEntryService;
         this.analyticsService = analyticsService;
         this.userRepository = userRepository;
     }
 
-    /**
-     * Helper method to get the real, stable User ID from the database.
-     */
+    // Helper to get stable User ID
     private Long getUserId(Authentication auth) {
-        if (auth == null) {
-            return null;
-        }
-
-        // FIX: Handle the Optional<User> returned by the repository
+        if (auth == null) return null;
         Optional<User> userOptional = userRepository.findByUsername(auth.getName());
-
-        if (userOptional.isPresent()) {
-            return userOptional.get().getId(); // Return the real ID
-        }
-
-        return null; // User not found
+        return userOptional.map(User::getId).orElse(null);
     }
 
-    @GetMapping("/me")
+
+    // --- FIX 2: Changed @GetMapping("/me") to @GetMapping ---
+    // This now handles requests for "/analytics"
+    @GetMapping
     public String myAnalytics(Model model, Authentication auth) {
         Long userId = getUserId(auth);
         if (userId == null) {
-            return "redirect:/login"; // User not found, send to login
+            return "redirect:/login";
         }
 
         List<MoodEntry> recent = moodEntryService.findRecentByUser(userId);
-        var avg = analyticsService.averagesForEntries(recent);
+
+        AnalyticsService.Averages avg = analyticsService.averagesForEntries(recent);
 
         model.addAttribute("avgMood", avg.averageMood());
         model.addAttribute("avgStress", avg.averageStress());
         model.addAttribute("suggestion", analyticsService.suggestionFor(avg));
 
-        return "analytics";
+        return "analytics"; // Returns analytics.html
     }
 
+    // This endpoint is for the family analytics demo box (if you add it back)
     @GetMapping("/family/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> familyAnalytics(@PathVariable Long id) {
-        // ... (existing family logic)
-        List<MoodEntry> allRecent = moodEntryService.findRecentByUser(id);
+        List<MoodEntry> allRecent = moodEntryService.findRecentByUser(id); // placeholder
         var grouped = analyticsService.groupByUser(allRecent);
         var famAvg = analyticsService.familyAverages(grouped);
         Map<String, Object> res = new HashMap<>();
@@ -86,6 +80,7 @@ public class AnalyticsController {
         return ResponseEntity.ok(res);
     }
 
+    // This endpoint provides the data for the chart
     @GetMapping("/me/data")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> myAnalyticsData(Authentication auth) {
